@@ -28,7 +28,7 @@ if __name__ == "__main__":
     assert len(fname) > 0, "Please provide a filename to the temperature data, see the readme for details"
 
     # Load data
-    df = pd.read_csv(fname)
+    df = pd.read_csv(fname, skiprows=4)
 
     # Convert to datetime
     df["Month"] = df["Year"].astype(str).str[-2:]
