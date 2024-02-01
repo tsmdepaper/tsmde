@@ -45,7 +45,7 @@ The file directory is given as
 
 ### Library
 
-The `library` folder contains packaged code for the TSM-DE method. This is split into separate files, each containing a different routine. For example, `asymptotic` contains code to calculate the asymptotic variance / detector of the TSM-DE estimator. `train` requires specification of two functions:
+The `library` folder contains packaged code for the TSM-DE method. This is split into separate files, each containing a different routine. For example, `asymptotic` contains code to calculate the asymptotic variance / detector of the TSM-DE estimator. The `train` function in `train.py` is the main function for training the TSM-DE model, and requires specification of two important functions: 
 
 ```
 def model_t(par, t):
