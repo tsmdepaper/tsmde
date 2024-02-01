@@ -24,6 +24,11 @@ plt.rcParams.update({
     "font.size": 11
 })
 
+piecewise_linear_mosum_R_filepath = ""
+
+assert len(piecewise_linear_mosum_R_filepath) > 0, "Please provide a filepath to the piecewise linear MOSUM R code, see the installation in the readme for details"
+
+
 def R_setup():
     from rpy2.robjects.vectors import StrVector
     import rpy2.robjects.packages as rpackages
@@ -133,9 +138,8 @@ def run_piecewise_linear_R(x):
     xr = rpy2.robjects.FloatVector(x.flatten())
     rpy2.robjects.globalenv['xr'] = xr
 
-    MOSUM_cps = rpy2.robjects.r('''
-        source("/home/danny/OneDrive/Work/TimeSM/PiecewiseMOSUMR/MOSUM_linear.R")
-
+    MOSUM_cps = rpy2.robjects.r('source("'+piecewise_linear_mosum_R_filepath+'")' + \
+        '''
         T = length(xr)
 
         i = 3
