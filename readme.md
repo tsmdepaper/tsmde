@@ -6,7 +6,7 @@ This is a repository for the code used in the paper "Time Score Matching for Par
 
 Clone the github repository:
 ```
-git clone  https://github.com/tsmdepaper/tsmde
+git clone https://github.com/tsmdepaper/tsmde
 cd tsmde
 ```
 and reproduce the results of the paper by running each file individually, explained below. We recommend creating a virtual environment with something such as anaconda, with Python version 3.11.4, e.g. in bash
@@ -20,7 +20,11 @@ pip install -r requirements.txt
 ``````
 to ensure every package is installed correctly for this repo. 
 
-You also need to have a working R installation to allow the `motivation_plots.py` file that uses `rpy2` to work, for which you also require the implementation from [1], at https://github.com/joonpyo-kim/movingsumlin. Additionally, it might be necessary to modify the `sourceCpp("mosumCwald.cpp")` line in `MOSUM_linear.R`, replacing `"mosumCwald.cpp"` with the full path to this file as it is saved in your local directory.
+You also need to have a working R installation to allow the `motivation_plots.py` file that uses `rpy2` to work, for which you also require the implementation from [1], at https://github.com/joonpyo-kim/movingsumlin. Therefore for this file you also need to run
+```
+git clone https://github.com/joonpyo-kim/movingsumlin
+```
+Additionally, it might be necessary to modify the `sourceCpp("mosumCwald.cpp")` line in `MOSUM_linear.R`, replacing `"mosumCwald.cpp"` with the full path to this file as it is saved in your local directory.
 
 ## File Directory
 
