@@ -20,6 +20,7 @@ pip install -r requirements.txt
 ``````
 to ensure every package is installed correctly for this repo. 
 
+You also need to have a working R installation to allow the experiments that use `rpy2`
 ## File Directory
 
 The file directory is given as
