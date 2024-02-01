@@ -12,7 +12,7 @@ conda activate tsmde
 and installing required packages given with the `requirements.txt` file
 ```
 pip install -r requirements.txt
-``
+``````
 to ensure every package is installed correctly for this repo. 
 
 ## File Directory
