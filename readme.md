@@ -4,7 +4,12 @@ This is a repository for the code used in the paper "Time Score Matching for Par
 
 ## Installation
 
-Clone the github repository and reproduce the results of the paper by running each file individually, explained below. We recommend creating a virtual environment with something such as anaconda, with Python version 3.11.4, e.g. in bash
+Clone the github repository:
+```
+git clone  https://github.com/tsmdepaper/tsmde
+cd tsmde
+```
+and reproduce the results of the paper by running each file individually, explained below. We recommend creating a virtual environment with something such as anaconda, with Python version 3.11.4, e.g. in bash
 ```
 conda create -n tsmde python=3.11.4 ipython
 conda activate tsmde
