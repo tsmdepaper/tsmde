@@ -1,4 +1,3 @@
-import sys
 import torch
 import torchvision.transforms as transforms
 
@@ -10,11 +9,16 @@ from PIL import Image
 from tqdm.auto import tqdm
 from scipy.stats import chi2
 
+import sys
+import os
+
+parent_dir = os.path.dirname(os.path.abspath('.'))
+sys.path.append(parent_dir)
+
 import library.auxilliary as aux
 import library.ll as ll
 from concept_drift_models import CNNNet
 
-sys.path.append("/home/danny/OneDrive/Work/TimeSM/library/")
 device = "cuda" if torch.cuda.is_available() else "cpu"  # device is a global variable
 
 # input fname - filepath to the 'list_attr_celeba.txt' attributes file
