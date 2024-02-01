@@ -101,7 +101,9 @@ Section 6.1 contains the temperature anomalies data example, obtained from https
 
 Section 6.2 contains the S&P Data example, obtained from Wharton Research Data Services. You need to request the data, and we unforunately cannot provide it here. Once you have the data, modify the `fname` variable in `SNP.py` to point to the .csv file. Then run `SNP.py` to reproduce Figure 4 of the paper.
 
-Section 6.3 contains the concept drift example, which is a simulated example. We have provided the pre-trained classification model in `smiling_model.pth`, which is a PyTorch model. However, you need to download the CelebA dataset, obtained from https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html. Modify the `folderpath` and `attrpath` variables in `concept_drift.py` to point to the folder containing the images and the text file containing attribute labels. Then run `concept_drift.py` to reproduce Figure 5 of the paper.
+Section 6.3 contains the concept drift example, which is a simulated example. We have provided the pre-trained classification model in `smiling_model.pth`, which is a PyTorch model. However, you need to download the CelebA dataset, obtained from https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html. 
+The files to download are (a) the folder `CelebA/Img/img_celeba`, and (b) the annotations text file `CelebA/Anno/list_attr_celeb.txt`.
+Then, modify the `folderpath` and `attrpath` variables in `concept_drift.py` to point to the folder containing the images and the text file containing attribute labels. Then run `concept_drift.py` to reproduce Figure 5 of the paper.
 
 
 [1] Kim, J., Oh, H.-S., and Cho, H. Moving sum procedure for change point detection under piecewise linearity. arXiv preprint arXiv:2208.04900, 2022
