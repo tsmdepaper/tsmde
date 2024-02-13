@@ -87,13 +87,21 @@ ax[1].plot(tseq, detectort); ax[0].set_ylabel("$D(t)$")
 ```
 will plot these values and should result in:
 ![Simple mean change example](example_mean_change.png?raw=true)
+where the top plot is the raw output from $\partial_t \theta_t$ and the bottom plot is the detector $D(t)$ that makes use of the asymptotic variance of $\partial_t \theta_t$.
+
 This is a basic example of the method for a mean change scenario, with data simulated from `simulate_mean_easy` from the `sim.py` file. To test different examples of changepoint detection, you can modify the data simulation function, changing `mean` to `var` or `both`, and/or changing `easy` to `medium` or `hard`. The different datasets this results in should be self explanatory. All different toy examples are given in `library/sim.py`. For a full explanation of the methods and the parameters involved, see the paper. A similar approach can be used for the sliding window method, see the `fit_local_linear` function `library/ll.py` for details.
 
-### Examples
+## Reproducing Experiments
 
-These are the numerical examples found in the paper in Figures 1 and 2, and results from Table 1.
+## Numerical Examples
 
-To reproduce Figure 1, you first must modify the `piecewise_linear_mosum_R_filepath` variable at the top of the `motivation_plots.py` file to point towards the `MOSUM_linear.R` file in your installation of the implementation from [1]. Then run `motivation_plots.py`. This will produce the plots in Figure 1 of the paper.
+These are the numerical examples found in the paper in Figures 1 and 2, and results from Table 1 and 2.
+
+To reproduce Figure 1, you first must modify the `piecewise_linear_mosum_R_filepath` variable at the top of the `motivation_plots.py` file to point towards the `MOSUM_linear.R` file in your installation of the implementation from [1]. Then run `motivation_plots.py` via
+```
+python examples/motivation_plots.py
+```
+from the `tsmde` directory.
 
 To reproduce Figure 2, run `illustrative_examples.py`. This will produce the plots in Figure 2 of the paper.
 
