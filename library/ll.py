@@ -12,16 +12,15 @@
 # the threshold is the same across all windows
 
 import autograd.numpy as np
-import matplotlib.pyplot as plt
 
 from autograd import elementwise_grad as grad
-from scipy.stats import chi2
 from tqdm.auto import tqdm
 
+import os
 import sys
-sys.path.append("/home/danny/OneDrive/Work/TimeSM/library/")
-sys.path.append("/home/danny/OneDrive/Work/TimeSM/")
 
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(current_file_path)
 
 from library.asymptotic import Sigma_dthetat, do_phi_reshape, mdot_v, Mddot_v
 from library.helpers import rbf2, E_nw_f, E_nw_phi, E_nw_dd_looped, cholesky_inv

@@ -1,4 +1,11 @@
 import numpy as np
+
+import os
+import sys
+
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(current_file_path)
+
 from train import get_data_vars_t1_NW, get_data_vars_all_NW, get_data_vars_vanilla
 from train import do_sliding_window
 from helpers import rbf2, E_nw_dd_looped, regularised_inv, cholesky_inv

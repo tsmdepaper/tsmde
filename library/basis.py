@@ -1,5 +1,11 @@
 from scipy.stats import chi2
 
+import os
+import sys
+
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(current_file_path)
+
 from helpers import *
 from asymptotic import *
 from train import train

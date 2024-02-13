@@ -8,8 +8,11 @@ import rpy2 # to run piecewise MOSUM R code in python
 import sys
 import os
 
-parent_dir = os.path.dirname(os.path.abspath('.'))
-sys.path.append(parent_dir)
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+parent_file_path  = os.path.dirname(current_file_path)
+
+sys.path.append(current_file_path)
+sys.path.append(parent_file_path)
 
 from scipy.stats import chi2
 

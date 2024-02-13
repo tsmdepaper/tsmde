@@ -2,8 +2,13 @@ import matplotlib.pyplot as plt
 import autograd.numpy as np
 import pandas as pd
 
-# from scipy import integrate
 from sklearn.metrics import confusion_matrix, auc
+
+import os
+import sys
+
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(current_file_path)
 
 from auxilliary import detector_to_changepoint, detector_to_changepoint_dist
 

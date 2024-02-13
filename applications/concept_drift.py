@@ -12,12 +12,17 @@ from scipy.stats import chi2
 import sys
 import os
 
-parent_dir = os.path.dirname(os.path.abspath('.'))
-sys.path.append(parent_dir)
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+parent_file_path  = os.path.dirname(current_file_path)
+
+sys.path.append(current_file_path)
+sys.path.append(parent_file_path)
 
 import library.auxilliary as aux
 import library.ll as ll
 from concept_drift_models import CNNNet
+
+
 
 device = "cuda" if torch.cuda.is_available() else "cpu"  # device is a global variable
 
@@ -192,6 +197,7 @@ def plot_example(data, num_per_time = 3):
             ax.axis("off")
 
     fig.tight_layout()
+    fig.show()
     
 
 if __name__ == "__main__":
@@ -270,3 +276,4 @@ if __name__ == "__main__":
     legend_dict = dict(zip(labels, handles))
     ax[1].legend(legend_dict.values(), legend_dict.keys(), bbox_to_anchor=(0.5, -0.3), 
                  loc="upper center", ncol=len(legend_dict), fontsize=16)
+    fig.show()

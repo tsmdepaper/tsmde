@@ -4,6 +4,12 @@ from scipy.optimize import minimize
 from tqdm.auto import tqdm
 from autograd import elementwise_grad as grad
 
+import os
+import sys
+
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(current_file_path)
+
 from helpers import *
 from sm import *
 

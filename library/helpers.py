@@ -2,6 +2,12 @@ import torch
 import autograd.numpy as np
 import psutil
 
+import os
+import sys
+
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(current_file_path)
+
 from tqdm.auto import tqdm
 
 # inverse function with regularisation (not useful for this example as p=1)

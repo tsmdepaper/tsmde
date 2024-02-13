@@ -6,8 +6,11 @@ import yfinance as yf # for getting stock volumes
 import sys
 import os
 
-parent_dir = os.path.dirname(os.path.abspath('.'))
-sys.path.append(parent_dir)
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+parent_file_path  = os.path.dirname(current_file_path)
+
+sys.path.append(current_file_path)
+sys.path.append(parent_file_path)
 
 from library.ll import fit_with_search
 from library.auxilliary import detector_to_changepoint

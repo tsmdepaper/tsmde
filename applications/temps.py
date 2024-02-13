@@ -5,8 +5,11 @@ import matplotlib.pyplot as plt
 import sys
 import os
 
-parent_dir = os.path.dirname(os.path.abspath('.'))
-sys.path.append(parent_dir)
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+parent_file_path  = os.path.dirname(current_file_path)
+
+sys.path.append(current_file_path)
+sys.path.append(parent_file_path)
 
 import library.auxilliary as aux
 from library.helpers import *
@@ -28,7 +31,7 @@ if __name__ == "__main__":
     assert len(fname) > 0, "Please provide a filename to the temperature data, see the readme for details"
 
     # Load data
-    df = pd.read_csv(fname, skiprows=4)
+    df = pd.read_csv(fname)
 
     # Convert to datetime
     df["Month"] = df["Year"].astype(str).str[-2:]

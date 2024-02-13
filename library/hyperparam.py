@@ -2,6 +2,12 @@ import autograd.numpy as np
 from autograd import elementwise_grad as grad
 from scipy.optimize import minimize
 
+import os
+import sys
+
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(current_file_path)
+
 from helpers import *
 from sm import *
 from train import get_data_vars_t1_NW, get_data_vars_all_NW, get_data_vars_vanilla

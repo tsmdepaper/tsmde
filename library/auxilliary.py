@@ -1,5 +1,10 @@
 import autograd.numpy as np
-import matplotlib.pyplot as plt
+
+import os
+import sys
+
+current_file_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(current_file_path)
 
 # convert detector to indices of timepoints
 def detector_to_changepoint_dist(detector, tseq, thresh, dist_between_changes):
