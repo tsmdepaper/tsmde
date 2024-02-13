@@ -93,7 +93,7 @@ This is a basic example of the method for a mean change scenario, with data simu
 
 ## Reproducing Experiments
 
-## Numerical Examples
+### Numerical Examples
 
 These are the numerical examples found in the paper in Figures 1 and 2, and results from Table 1 and 2.
 
