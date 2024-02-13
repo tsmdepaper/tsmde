@@ -97,4 +97,5 @@ if __name__ == "__main__":
     ax[1].legend(legend_dict.values(), legend_dict.keys(), loc='upper center', bbox_to_anchor=(0.5, -0.25), ncol=3)
 
     fig.tight_layout()
+    plt.show()
 

@@ -198,6 +198,7 @@ if __name__ == "__main__":
         ax[row_i, 0].set_ylabel("$\\partial_t \\hat{\\theta}(t)$", fontsize=19)
     
     fig.tight_layout()
+    plt.show()
 
     # Plot detector and CPs
     fig, ax = plt.subplots(1, 1, figsize=(7, 2.5))
@@ -220,6 +221,7 @@ if __name__ == "__main__":
               bbox_to_anchor=(0.5, -0.25), ncol=3, fontsize=16)
 
     fig.tight_layout()
+    plt.show()
 
 
 

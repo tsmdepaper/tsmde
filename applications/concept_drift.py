@@ -276,4 +276,4 @@ if __name__ == "__main__":
     legend_dict = dict(zip(labels, handles))
     ax[1].legend(legend_dict.values(), legend_dict.keys(), bbox_to_anchor=(0.5, -0.3), 
                  loc="upper center", ncol=len(legend_dict), fontsize=16)
-    fig.show()
+    plt.show()
