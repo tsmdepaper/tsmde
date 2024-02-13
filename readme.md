@@ -47,7 +47,9 @@ The file directory is given as
 └── readme.md
 ```
 
-### Library
+## Code Library
+
+Here, we briefly outline usage of the code as it is currently written.
 
 The `library` folder contains packaged code for the TSM-DE method. This is split into separate files, each containing a different routine. For example, `asymptotic` contains code to calculate the asymptotic variance / detector of the TSM-DE estimator. The `train` function in `train.py` is the main function for training the TSM-DE model, and requires specification of two important functions: 
 
@@ -58,9 +60,9 @@ def model_t(par, t):
 def model_tt(par, t):
     ...
 ```
-corresponding to the first derivative $\partial_t \theta_t$ and the second derivative $\partial_t^2 \theta_t$ of the model parameters, these are required by the TSM-DE objective function.
+corresponding to the first derivative $\partial_t \theta_t$ and the second derivative $\partial_t^2 \theta_t$ of the model parameters, these are required by the TSM-DE objective function. These are derivatives of the _model_ for $\theta_t$, an important part of the method. Details are given in the paper.
 
-The two main methods given by the RBF feature and the sliding window model are in the files `basis` and `ll`, named for the RBF basis and local linear (sliding window) method. These provide aliases to the `train` function and are more straightforward to use. For example
+The two main methods in the paper are the RBF feature and the sliding window model, which are in the files `basis` and `ll`, named for the RBF basis and local linear (sliding window) method. These provide aliases to the `train` function and are more straightforward to use for regular fitting. A self contained example is given in the following python code:
 
 ```python
 from library.basis import fit_basis
@@ -80,10 +82,12 @@ which will give the estimates $\partial_t \hat{\theta}_t$ as `dthetat` and $D(t)
 ```python
 import matplotlib.pyplot as plt
 fig, ax = plt.subplots(2, 1, figsize=(10, 6))
-ax[0].plot(tseq, dthetat)
-ax[1].plot(tseq, detectort)
+ax[0].plot(tseq, dthetat); ax[0].set_ylabel("$\\partial_t \\theta_t$")
+ax[1].plot(tseq, detectort); ax[0].set_ylabel("$D(t)$")
 ```
-will plot these values. This is a basic example of the method for a mean change scenario. To test different examples of changepoint detection, you can modify the data simulation function. All different toy examples are given in `library/sim.py`. For a full explanation of the methods and the parameters involved, see the paper. A similar approach can be used for the sliding window method, see the `fit_local_linear` function `library/ll.py` for details.
+will plot these values and should result in:
+![Simple mean change example](example_mean_change.png?raw=true)
+This is a basic example of the method for a mean change scenario, with data simulated from `simulate_mean_easy` from the `sim.py` file. To test different examples of changepoint detection, you can modify the data simulation function, changing `mean` to `var` or `both`, and/or changing `easy` to `medium` or `hard`. The different datasets this results in should be self explanatory. All different toy examples are given in `library/sim.py`. For a full explanation of the methods and the parameters involved, see the paper. A similar approach can be used for the sliding window method, see the `fit_local_linear` function `library/ll.py` for details.
 
 ### Examples
 
