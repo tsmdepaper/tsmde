@@ -127,3 +127,4 @@ if __name__ == "__main__":
     fig, ax = plt.subplots(2, 2, figsize=(22, 4.5), sharex=True)
     mean_and_var_change(600, 10, ax1=ax[0, 0], ax2=ax[1, 0])
     run_crazy(5000, 10, ax1=ax[0, 1], ax2=ax[1, 1])
+    plt.show()

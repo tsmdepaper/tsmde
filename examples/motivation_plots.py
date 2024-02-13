@@ -234,3 +234,4 @@ if __name__ == "__main__":
     run_piecewise_linear(500, 3, ax[1, 0], ax[1, 1])
     run_abrupt_cp(500, 3, ax[2, 0], ax[2, 1])
     fig.tight_layout()
+    plt.show()
