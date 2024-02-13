@@ -97,25 +97,55 @@ This is a basic example of the method for a mean change scenario, with data simu
 
 These are the numerical examples found in the paper in Figures 1 and 2, and results from Table 1 and 2.
 
-To reproduce Figure 1, you first must modify the `piecewise_linear_mosum_R_filepath` variable at the top of the `motivation_plots.py` file to point towards the `MOSUM_linear.R` file in your installation of the implementation from [1]. Then run `motivation_plots.py` via
+To reproduce Figure 1, you first must modify the `piecewise_linear_mosum_R_filepath` variable at the top of the `motivation_plots.py` file to point towards the `MOSUM_linear.R` file in your installation of the implementation from [1]. Then run `motivation_plots.py` via the terminal
 ```
 python examples/motivation_plots.py
 ```
 from the `tsmde` directory.
 
-To reproduce Figure 2, run `illustrative_examples.py`. This will produce the plots in Figure 2 of the paper.
+To reproduce Figure 2, run via the terminal 
+```
+python examples/illustrative_examples.py
+```
+This will produce the plots in Figure 2 of the paper.
 
-To reproduce Table 1, run `changepoint_benchmark.py`. This will produce one trial (one seed), for which seeds 0 - 63 are averaged and reported in the paper. This will take a few minutes to run. To reproduce the table completely, run the file 64 times, each time changing the seed to be 0, 1, ..., 63, and average the results.
+To reproduce Table 1, run via the terminal
+```
+python examples/changepoint_benchmark.py
+```
+This will produce one trial (one seed, fixed as `seed=0` in the file which can be changed), for which seeds 0 - 63 are averaged and reported in the paper. This will take a few minutes to run. To reproduce the table completely, run the file 64 times, each time changing the seed to be 0, 1, ..., 63, and average the results.
+
+To reproduce Table 2, first change the `piecewise_linear_mosum_R_filepath` variable at the top of the `motivation_plots.py` file to point towards the `MOSUM_linear.R` file in your installation of the implementation from [1]. Then run via the terminal
+```
+python examples/changepoint_benchmark_pwl.py
+```
+This will produce one trial (one seed, fixed as `seed=0` in the file which can be changed), for which seeds 0 - 63 are averaged and reported in the paper. This will take a few minutes to run. To reproduce the table completely, run the file 64 times, each time changing the seed to be 0, 1, ..., 63, and average the results.
+
 
 ### Applications
 
-Section 6.1 contains the temperature anomalies data example, obtained from https://www.ncei.noaa.gov/access/monitoring/global-temperature-anomalies/. Download the Monthly temperature anomalies data for the Northern hemisphere across Land and Ocean. Modify the `fname` variable in `temps.py` to point to this .csv file. Then run `temps.py` to reproduce Figure 3 of the paper.
+Section 6.1 contains the temperature anomalies data example, obtained from https://www.ncei.noaa.gov/access/monitoring/global-temperature-anomalies/. Download the Monthly temperature anomalies data for the Northern hemisphere across Land and Ocean. Modify the `fname` variable in `temps.py` to point to this .csv file. Then run via the terminal
+```
+python applications/temps.py
+````
+to reproduce Figure 3 of the paper.
 
-Section 6.2 contains the S&P Data example, obtained from Wharton Research Data Services. You need to request the data, and we unforunately cannot provide it here. Once you have the data, modify the `fname` variable in `SNP.py` to point to the .csv file. Then run `SNP.py` to reproduce Figure 4 of the paper.
+Section 6.2 contains the S&P Data example, obtained from Wharton Research Data Services. You need to request the data, and we unforunately cannot provide it here. The data is daily stock returns from the lead up to the global financial crisis, which is then pre-modified to transform the returns to volatility measures. We apologise in advance for the difficulty to reproduce these results. Feel free to contact the authors of the paper for any assistance if you wish to do so. If you obtain the data, modify the `fname` variable in `SNP.py` to point to the .csv file that has been downloaded. Then run via the terminal
+```
+python applications/SNP.py
+```
+to reproduce Figure 4 of the paper.
 
 Section 6.3 contains the concept drift example, which is a simulated example. We have provided the pre-trained classification model in `smiling_model.pth`, which is a PyTorch model. However, you need to download the CelebA dataset, obtained from https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html. 
-The files to download are (a) the folder `CelebA/Img/img_align_celeba`, and (b) the annotations text file `CelebA/Anno/list_attr_celeb.txt`.
-Then, modify the `folderpath` and `attrpath` variables in `concept_drift.py` to point to the folder containing the images and the text file containing attribute labels. Then run `concept_drift.py` to reproduce Figure 5 of the paper.
+The files to download are (a) the folder `CelebA/Img/img_align_celeba`, and (b) the annotations text file `CelebA/Anno/list_attr_celeb.txt`. Download these and make note of where they are saved.
+Then, modify the `folderpath` and `attrpath` variables in `concept_drift.py` to point to the folder containing the images and the text file containing attribute labels, respectively. Then run via the terminal
+``` 
+python applications/concept_drift.py
+```
+to reproduce Figure 5 of the paper.
+
+## Contact
+If you have any issues reproducing these results, please get in touch, anonymously if needed, via the Github issues thread.
 
 
 [1] Kim, J., Oh, H.-S., and Cho, H. Moving sum procedure for change point detection under piecewise linearity. arXiv preprint arXiv:2208.04900, 2022
