@@ -86,7 +86,7 @@ ax[0].plot(tseq, dthetat); ax[0].set_ylabel("$\\partial_t \\theta_t$")
 ax[1].plot(tseq, detectort); ax[0].set_ylabel("$D(t)$")
 ```
 will plot these values and should result in:
-![Simple mean change example](example_mean_change.png?raw=true)
+![Simple mean change example](example_mean_change.png)
 where the top plot is the raw output from $\partial_t \theta_t$ and the bottom plot is the detector $D(t)$ that makes use of the asymptotic variance of $\partial_t \theta_t$.
 
 This is a basic example of the method for a mean change scenario, with data simulated from `simulate_mean_easy` from the `sim.py` file. To test different examples of changepoint detection, you can modify the data simulation function, changing `mean` to `var` or `both`, and/or changing `easy` to `medium` or `hard`. The different datasets this results in should be self explanatory. All different toy examples are given in `library/sim.py`. For a full explanation of the methods and the parameters involved, see the paper. A similar approach can be used for the sliding window method, see the `fit_local_linear` function `library/ll.py` for details.
