@@ -83,7 +83,7 @@ which will give the estimates $\partial_t \hat{\theta}_t$ as `dthetat` and $D(t)
 import matplotlib.pyplot as plt
 fig, ax = plt.subplots(2, 1, figsize=(10, 6))
 ax[0].plot(tseq, dthetat); ax[0].set_ylabel("$\\partial_t \\theta_t$")
-ax[1].plot(tseq, detectort); ax[0].set_ylabel("$D(t)$")
+ax[1].plot(tseq, detectort); ax[1].set_ylabel("$D(t)$")
 ```
 will plot these values and should result in:
 ![Simple mean change example](https://raw.githubusercontent.com/tsmdepaper/tsmde/main/example_mean_change.png)
