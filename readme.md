@@ -62,7 +62,11 @@ def model_tt(par, t):
 ```
 corresponding to the first derivative $\partial_t \theta_t$ and the second derivative $\partial_t^2 \theta_t$ of the model parameters, these are required by the TSM-DE objective function. These are derivatives of the _model_ for $\theta_t$, an important part of the method. Details are given in the paper.
 
-The two main methods in the paper are the RBF feature and the sliding window model, which are in the files `basis` and `ll`, named for the RBF basis and local linear (sliding window) method. These provide aliases to the `train` function and are more straightforward to use for regular fitting. A self contained example is given in the following python code:
+The two main methods in the paper are the RBF feature and the sliding window model, which are in the files `basis` and `ll`, named for the RBF basis and local linear (sliding window) method. These provide aliases to the `train` function and are more straightforward to use for regular fitting. 
+
+### Self-contained Example
+
+The following code simulates a basic changepoint detection task where the mean jumps significantly at $t=0.5$. Then we implement TSM-DE.
 
 ```python
 from library.basis import fit_basis
