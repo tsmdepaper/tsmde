@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import autograd.numpy as np
 import pandas as pd
 import yfinance as yf # for getting stock volumes
+import ruptures as rpt
+import mosum
 
 import sys
 import os
@@ -102,6 +104,49 @@ def f(x):
 
     return np.array(result).flatten()
 
+def f_mosum(xy, means):
+    dimensionality = xy.shape[1]
+    result = []
+    for i in range(dimensionality):
+        result.append((xy[:, i] - means[i])**2)
+
+    return np.array(result).T
+
+def run_mosum(ts):
+
+    d = ts.shape[1]
+    T = ts.shape[0]
+
+    cpts = []
+    all_cpts = []
+    for i in range(d):
+
+        mod = mosum.mosum(ts[:, i], G = int(len(ts)/6))
+
+        # Combine any duplicate changepoints into the mean of the two within radius epsilon
+        eps = 0.04
+        current_cpts = mod.cpts
+
+        all_cpts.append(current_cpts)
+
+        delete_inds  = []
+        new_cpts = []
+        for i, cp1 in enumerate(current_cpts):
+            for j, cp2 in enumerate(cpts):
+                if abs(cp1 - cp2) < (eps*T):
+                    delete_inds.append(i)
+                    new_cpts.append(int((cp1 + cp2)/2))
+        
+        current_cpts = np.delete(current_cpts, delete_inds)
+
+        # combine them all
+        cpts = np.array(np.concatenate([cpts, current_cpts]), dtype=int)
+        cpts.sort()              
+        cpts = cpts.tolist()
+
+
+    return cpts, all_cpts
+
     
 if __name__ == "__main__":
 
@@ -144,7 +189,7 @@ if __name__ == "__main__":
     tseq = np.linspace(0, 1, len(binned_data))[:, None]
 
     alpha, dthetat, detector, _ = fit_with_search(tseq, binned_data, f,
-                                                  lams = [5],
+                                                  lams = [1, 2.5, 4],
                                                   bs = [0.05, 0.075, 0.1],
                                                   inner_nw = True, inner_nw_bws = [1/(20*T), 1/(40*T)],        
                                                   verbose=True                                          
@@ -223,23 +268,27 @@ if __name__ == "__main__":
     fig.tight_layout()
     plt.show()
 
+    ## run MOSUM
+    xy = np.array([f(x) for x in np.vstack(binned_data)])
+    ts = f_mosum(xy, xy.mean(0))
+    mosum_cpts_comb, mosum_cpts_all = run_mosum(ts)
+
+    ## run PELT
+    algo = rpt.Pelt("rbf").fit(xy)
+    rpt_cpts = algo.predict(pen = 2*np.log(len(ts)))
+    rpt_cpts.pop() # last changepoint in ruptures is always the end of the series so remove it
+
+    # print MOSUM detected changepoints
+    print("MOSUM Detected Changepoints")
+    print(df_sub["datadate"].iloc[mosum_cpts_comb])
+    for i in range(xy.shape[1]):
+        print(df_sub["datadate"].iloc[mosum_cpts_all[i]])
+
+    # print PELT detected changepoints
+    print("PELT Detected Changepoints")
+    print(df_sub["datadate"].iloc[rpt_cpts])
 
 
 
 
 
-
-
-
-
-
-
-
-    # rolling_corrs = pd.DataFrame(index=df_sub.index)
-
-    # for i in range(len(subset)):
-    #     for j in range(i+1, len(subset)):
-    #         colname = f'corr_{subset[i]}_{subset[j]}'
-    #         rolling_corrs[colname] = df_sub[subset[i]].rolling(window=60).corr(df_sub[subset[j]])
-
-    # plt.plot(rolling_corrs.values.mean(1))

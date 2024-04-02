@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import rpy2
 
 import sys
 import os
@@ -25,10 +26,60 @@ plt.rcParams.update({
 })
 plt.rcParams['text.latex.preamble'] = r'\usepackage{amsmath}'
 
-if __name__ == "__main__":
+fname = ""
+assert len(fname) > 0, "Please provide a filename to the temperature data, see the readme for details"
 
-    fname = ""
-    assert len(fname) > 0, "Please provide a filename to the temperature data, see the readme for details"
+piecewise_linear_mosum_R_filepath = ""
+assert len(piecewise_linear_mosum_R_filepath) > 0, "Please provide a filepath to the piecewise linear MOSUM R code, see the installation in the readme for details"
+
+
+def R_setup():
+    from rpy2.robjects.vectors import StrVector
+    import rpy2.robjects.packages as rpackages
+
+    utils = rpackages.importr('utils')
+    packnames = ('tidyverse', 'RcppArmadillo')
+    
+    names_to_install = [x for x in packnames if not rpackages.isinstalled(x)]
+    if len(names_to_install) > 0:
+        utils.install_packages(StrVector(names_to_install))   
+
+def run_pwl_mosum(x):
+    
+    R_setup()
+
+    # setup vector in R environment
+    xr = rpy2.robjects.FloatVector(x.flatten())
+    rpy2.robjects.globalenv['xr'] = xr
+
+    MOSUM_cps = rpy2.robjects.r('source("'+piecewise_linear_mosum_R_filepath+'")' + \
+        '''
+        T = length(xr)
+
+        i = 3
+        G = c(as.integer(0.15*T), as.integer(0.15*T))
+        while (G[length(G)] < T/log(T, base=10)){
+            G[i] = G[i-1] + G[i-2]
+            i = i + 1
+        }
+                                
+        G = G[2:(length(G))]
+        print(G)
+        MOSUM_linear(xr, G_vec = G)
+        ''')
+    
+    return np.array(MOSUM_cps)
+
+
+def fit_pwl_mosum(x, change_type=["mean", "var", "both"][0]):
+
+    T = len(x)
+    x = x.flatten()
+
+    mod_mean_cpts = run_pwl_mosum(x)
+    return mod_mean_cpts.tolist()
+
+if __name__ == "__main__":
 
     # Load data
     df = pd.read_csv(fname)
@@ -99,3 +150,16 @@ if __name__ == "__main__":
     fig.tight_layout()
     plt.show()
 
+    ## Run Piecewise Linear MOSUM
+    mosum_cpts = fit_pwl_mosum(df["Anomaly"].values[:, None])
+
+    # closest to tseq
+    tseq_big   = np.linspace(0, 1, len(df))[:, None]
+    mosum_cpts = [tseq_big[c] for c in mosum_cpts]
+
+    # print output of piecewise linear MOSUM detected changes
+    print("Piecewise Linear MOSUM Detected Changes")
+    t_sub_big = df["Date"]
+    for c in mosum_cpts:
+        t_c = t_sub_big.iloc[np.argmin(np.abs(tseq_big - c))]
+        print(t_c)
