@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import rpy2
 
 import sys
 import os
@@ -26,60 +25,10 @@ plt.rcParams.update({
 })
 plt.rcParams['text.latex.preamble'] = r'\usepackage{amsmath}'
 
-fname = ""
-assert len(fname) > 0, "Please provide a filename to the temperature data, see the readme for details"
-
-piecewise_linear_mosum_R_filepath = ""
-assert len(piecewise_linear_mosum_R_filepath) > 0, "Please provide a filepath to the piecewise linear MOSUM R code, see the installation in the readme for details"
-
-
-def R_setup():
-    from rpy2.robjects.vectors import StrVector
-    import rpy2.robjects.packages as rpackages
-
-    utils = rpackages.importr('utils')
-    packnames = ('tidyverse', 'RcppArmadillo')
-    
-    names_to_install = [x for x in packnames if not rpackages.isinstalled(x)]
-    if len(names_to_install) > 0:
-        utils.install_packages(StrVector(names_to_install))   
-
-def run_pwl_mosum(x):
-    
-    R_setup()
-
-    # setup vector in R environment
-    xr = rpy2.robjects.FloatVector(x.flatten())
-    rpy2.robjects.globalenv['xr'] = xr
-
-    MOSUM_cps = rpy2.robjects.r('source("'+piecewise_linear_mosum_R_filepath+'")' + \
-        '''
-        T = length(xr)
-
-        i = 3
-        G = c(as.integer(0.15*T), as.integer(0.15*T))
-        while (G[length(G)] < T/log(T, base=10)){
-            G[i] = G[i-1] + G[i-2]
-            i = i + 1
-        }
-                                
-        G = G[2:(length(G))]
-        print(G)
-        MOSUM_linear(xr, G_vec = G)
-        ''')
-    
-    return np.array(MOSUM_cps)
-
-
-def fit_pwl_mosum(x, change_type=["mean", "var", "both"][0]):
-
-    T = len(x)
-    x = x.flatten()
-
-    mod_mean_cpts = run_pwl_mosum(x)
-    return mod_mean_cpts.tolist()
-
 if __name__ == "__main__":
+
+    fname = ""
+    assert len(fname) > 0, "Please provide a filename to the temperature data, see the readme for details"
 
     # Load data
     df = pd.read_csv(fname)
@@ -118,7 +67,7 @@ if __name__ == "__main__":
     
     # Plot detector
 
-    fig, ax = plt.subplots(2, 1, figsize=(7, 4))
+    fig, ax = plt.subplots(3, 1, figsize=(7, 6))
     ax[0].plot(df["Date"], df["Anomaly"], color="#404040", linewidth=0.5)
     ax[0].set_ylabel("Temperature \n Anomaly ($^\circ$C)", va="center")
 
@@ -126,40 +75,36 @@ if __name__ == "__main__":
     ax[0].set_xticks([])
 
     t_sub_n = df["Date"][np.arange(0, len(df), n)][:-1]
-    ax[1].plot(t_sub_n, np.log1p(detector), color="black", linewidth=2)
-    ax[1].set_ylabel("$\\log(1 + D(t))$", labelpad=20)
-    ax[1].axhline(np.log1p(thresh), color="red", linestyle="--", linewidth=1, label = "$\\log(1 + \\chi^2_{1, 0.99})$")
+
+    ax[1].plot(t_sub_n, dthetat, color="black", linewidth=2)
+    ax[1].set_ylabel("$\partial_t \\hat{\\theta}_t$", labelpad=20)
     ax[1].set_xlim(df["Date"].min(), df["Date"].max())
-    ax[1].set_xlabel("Year")
+    ax[1].set_xticks([])
+
+    ax[2].plot(t_sub_n, np.log1p(detector), color="black", linewidth=2)
+    ax[2].set_ylabel("$\\log(1 + D(t))$", labelpad=20)
+    ax[2].axhline(np.log1p(thresh), color="red", linestyle="--", linewidth=1, label = "$\\log(1 + \\chi^2_{1, 0.99})$")
+    ax[2].set_xlim(df["Date"].min(), df["Date"].max())
+    ax[2].set_xlabel("Year")
 
     for c in est_cpts_all:
         t_c = t_sub_n.iloc[np.argmin(np.abs(tseq - c))]
         ax[0].axvline(t_c, color="red")
-        ax[1].axvline(t_c, color="red", label = "Change Region Markers")
+        ax[1].axvline(t_c, color="red")
+        ax[2].axvline(t_c, color="red", label = "Change Period Markers")
 
     # Set the position of the y-axis labels
-    ax[0].yaxis.set_label_coords(-0.075, 0.5)
-    ax[1].yaxis.set_label_coords(-0.075, 0.5)
-
-    handles, labels = ax[1].get_legend_handles_labels()
+    for axi in ax:
+        axi.yaxis.set_label_coords(-0.075, 0.5)
+        
+    handles, labels = ax[2].get_legend_handles_labels()
     legend_dict = dict(zip(labels, handles))  
     
     # Add a legend at the bottom of the plot
-    ax[1].legend(legend_dict.values(), legend_dict.keys(), loc='upper center', bbox_to_anchor=(0.5, -0.25), ncol=3)
+    ax[2].legend(legend_dict.values(), legend_dict.keys(), loc='upper center', bbox_to_anchor=(0.5, -0.25), ncol=3)
 
     fig.tight_layout()
+
+    plt.savefig("/home/danny/OneDrive/Thesis/code/outputs/cp/temperature_anomalies.pdf", bbox_inches="tight")
     plt.show()
 
-    ## Run Piecewise Linear MOSUM
-    mosum_cpts = fit_pwl_mosum(df["Anomaly"].values[:, None])
-
-    # closest to tseq
-    tseq_big   = np.linspace(0, 1, len(df))[:, None]
-    mosum_cpts = [tseq_big[c] for c in mosum_cpts]
-
-    # print output of piecewise linear MOSUM detected changes
-    print("Piecewise Linear MOSUM Detected Changes")
-    t_sub_big = df["Date"]
-    for c in mosum_cpts:
-        t_c = t_sub_big.iloc[np.argmin(np.abs(tseq_big - c))]
-        print(t_c)
